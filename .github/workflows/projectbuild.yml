@@ -1,0 +1,48 @@
+name: gradleCI
+
+on: [push]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: self-hosted
+    timeout-minutes: 3
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'corretto'
+          cache: gradle
+
+      - name: Compile Java
+        run: ./gradlew compileJava
+
+      - name: Build project
+        run: ./gradlew build
+
+      # Note that running test task will also perform code coverage
+      - name: Run tests
+        run: ./gradlew test
+
+      - name: Produce JavaDoc
+        run: ./gradlew javadoc
+
+      - name: Upload reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: Reports
+          path: build/reports/
+
+      - name: Upload JavaDoc
+        uses: actions/upload-artifact@v3
+        with:
+          name: Documentation
+          path: build/docs
