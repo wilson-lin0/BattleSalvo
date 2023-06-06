@@ -1,0 +1,5 @@
+- Created abstract class AbstractPlayer : update to a better design for easier extension
+- Created interface Controller : update to a better design for easier extension
+- Refactored class Controller -> LocalController : update for a better design
+- Altered class LocalController : removed Appendable output, added View view
+- Altered Driver : LocalController constructor changes
