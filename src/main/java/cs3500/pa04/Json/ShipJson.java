@@ -1,7 +1,15 @@
-package cs3500.pa04;
+package cs3500.pa04.Json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import cs3500.pa04.Enumerations.Direction;
 
+/**
+ * Represents a ship Json.
+ *
+ * @param coord the starting coordinate of the ship
+ * @param length the length of the ship
+ * @param direction the direction of the ship
+ */
 public record ShipJson(
     @JsonProperty ("coord") CoordJson coord, // starting coordinate
     @JsonProperty("length") int length,

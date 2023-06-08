@@ -1,4 +1,4 @@
-package cs3500.pa04;
+package cs3500.pa04.Enumerations;
 
 /**
  * Different ways a game can end.

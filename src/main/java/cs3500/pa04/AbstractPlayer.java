@@ -1,5 +1,7 @@
 package cs3500.pa04;
 
+import cs3500.pa04.Enumerations.GameResult;
+import cs3500.pa04.Enumerations.ShipType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
