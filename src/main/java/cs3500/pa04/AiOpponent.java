@@ -7,6 +7,7 @@ import java.util.List;
  * The opponent.
  */
 public class AiOpponent extends AbstractPlayer {
+
   AiOpponent(String name) {
     super(name);
   }
@@ -25,6 +26,7 @@ public class AiOpponent extends AbstractPlayer {
       for (int k = 0; k < this.coveredBoard.returnWidth() && shotsAvailable > 0; k++) {
         if (this.coveredBoard.getCoord(new Coord(k, j)) == 'O') {
           locations.add(new Coord(k, j));
+          this.coveredBoard.takeHit(new Coord(k, j));
           shotsAvailable--;
         }
       }
