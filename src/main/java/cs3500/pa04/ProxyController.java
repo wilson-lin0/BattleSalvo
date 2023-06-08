@@ -31,7 +31,6 @@ public class ProxyController implements Controller {
   private final PrintStream out;
   private final AiOpponent player;
   private final ObjectMapper mapper = new ObjectMapper();
-  private final View view = new View();
   private static final JsonNode VOID_RESPONSE =
       new ObjectMapper().getNodeFactory().textNode("void");
 
@@ -191,7 +190,7 @@ public class ProxyController implements Controller {
     EndGameJson endGameJson = this.mapper.convertValue(arguments, EndGameJson.class);
     GameResult result = endGameJson.returnResult();
     String reason = endGameJson.reason();
-    view.printMessage(result.name() + reason);
+    this.player.endGame(result, reason);
 
     MessageJson reportDamageResponse = new MessageJson("end-game",
         VOID_RESPONSE);
