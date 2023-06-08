@@ -1,4 +1,4 @@
-package cs3500.pa04.Enumerations;
+package cs3500.pa04.enumerations;
 
 /**
  * Represents all the ship types.
@@ -9,8 +9,8 @@ public enum ShipType {
   D('D'),
   S('S');
 
-  private char shipName;
-  private int size;
+  private final char shipName;
+  private final int size;
 
   ShipType(char shipName) {
     this.shipName = shipName;

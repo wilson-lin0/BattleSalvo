@@ -1,7 +1,7 @@
-package cs3500.pa04.Json;
+package cs3500.pa04.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import cs3500.pa04.Enumerations.Direction;
+import cs3500.pa04.enumerations.Direction;
 
 /**
  * Represents a ship Json.

@@ -1,6 +1,7 @@
-package cs3500.pa04.Json;
+package cs3500.pa04.json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
 
 /**
  * Represents a message Json.
@@ -10,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public record MessageJson (
   @JsonProperty("method-name") String methodName,
-  @JsonProperty("arguments") String[] arguments) {
+  @JsonProperty("arguments") JsonNode arguments) {
 
   /**
    * Returns the method name.
@@ -26,7 +27,7 @@ public record MessageJson (
    *
    * @return String[] the arguments
    */
-  public String[] returnArguments() {
+  public JsonNode returnArguments() {
     return this.arguments;
   }
 }

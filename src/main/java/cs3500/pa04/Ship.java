@@ -1,6 +1,7 @@
 package cs3500.pa04;
 
-import cs3500.pa04.Enumerations.ShipType;
+import cs3500.pa04.enumerations.Direction;
+import cs3500.pa04.enumerations.ShipType;
 import java.util.List;
 
 /**
@@ -61,5 +62,13 @@ public class Ship {
       }
     }
     return -1;
+  }
+
+  public Direction getDirection() {
+    if (this.coordinate.get(0).returnX() < this.coordinate.get(1).returnX()) {
+      return Direction.HORIZONTAL;
+    } else {
+      return Direction.VERTICAL;
+    }
   }
 }

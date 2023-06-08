@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import cs3500.pa04.Enumerations.GameResult;
-import cs3500.pa04.Enumerations.ShipType;
+import cs3500.pa04.enumerations.GameResult;
+import cs3500.pa04.enumerations.ShipType;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.io.StringReader;

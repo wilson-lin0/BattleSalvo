@@ -1,10 +1,10 @@
-package cs3500.pa04.Enumerations;
+package cs3500.pa04.enumerations;
 
 public enum Direction {
-  VERTICAL("Vertical"),
-  HORIZONTAL("Horizontal");
+  VERTICAL("VERTICAL"),
+  HORIZONTAL("HORIZONTAL");
 
-  private String direction;
+  private final String direction;
   Direction(String direction) {
     this.direction = direction;
   }

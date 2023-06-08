@@ -2,7 +2,7 @@ package cs3500.pa04;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import cs3500.pa04.Enumerations.GameResult;
+import cs3500.pa04.enumerations.GameResult;
 import org.junit.jupiter.api.Test;
 
 class GameResultTest {
