@@ -39,7 +39,6 @@ class LocalControllerTest {
         mock.expectedNextString(i + " " + j);
       }
     }
-
     LocalController player = new LocalController(mock, view);
     player.run();
   }
