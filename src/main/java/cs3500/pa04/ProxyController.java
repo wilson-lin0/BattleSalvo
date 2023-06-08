@@ -7,7 +7,6 @@ import cs3500.pa04.enumerations.Direction;
 import cs3500.pa04.enumerations.GameResult;
 import cs3500.pa04.enumerations.GameType;
 import cs3500.pa04.enumerations.ShipType;
-import cs3500.pa04.json.ClientSetupJson;
 import cs3500.pa04.json.CoordJson;
 import cs3500.pa04.json.CoordinatesJson;
 import cs3500.pa04.json.EndGameJson;
@@ -15,11 +14,9 @@ import cs3500.pa04.json.FleetJson;
 import cs3500.pa04.json.FleetSpec;
 import cs3500.pa04.json.JoinJson;
 import cs3500.pa04.json.MessageJson;
-import cs3500.pa04.json.ReportDamageJson;
 import cs3500.pa04.json.ServerSetupJson;
 import cs3500.pa04.json.JsonUtils;
 import cs3500.pa04.json.ShipJson;
-import cs3500.pa04.json.TakeShotsJson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -98,8 +95,7 @@ public class ProxyController implements Controller {
     JoinJson joinJson = new JoinJson(name, gameType.getGameType());
     JsonNode jsonResponse = JsonUtils.serializeRecord(joinJson);
     MessageJson messageJson = new MessageJson("join", jsonResponse);
-    System.out.println(messageJson);
-    this.out.println(messageJson);
+    this.out.println(JsonUtils.serializeRecord(messageJson));
   }
 
   private void handleSetup(JsonNode arguments) {
@@ -119,10 +115,9 @@ public class ProxyController implements Controller {
     }
 
     FleetJson fleetJson = new FleetJson(listOfShipsJsons);
-    ClientSetupJson response = new ClientSetupJson(fleetJson);
-    JsonNode jsonResponse = JsonUtils.serializeRecord(response);
+    JsonNode jsonResponse = JsonUtils.serializeRecord(fleetJson);
     MessageJson setupResponse = new MessageJson("setup", jsonResponse);
-    this.out.println(setupResponse);
+    this.out.println(JsonUtils.serializeRecord(setupResponse));
   }
 
   private List<Ship> getPlayerSetup(ServerSetupJson setup) {
@@ -137,7 +132,7 @@ public class ProxyController implements Controller {
 
   private void handleTakeShots() {
     List<Coord> takeShots = player.takeShots();
-    CoordJson[] listOfCoord = new CoordJson[takeShots.size() - 1];
+    CoordJson[] listOfCoord = new CoordJson[takeShots.size()];
 
     for (int i = 0; i < takeShots.size(); i++) {
       int x = takeShots.get(i).returnX();
@@ -147,10 +142,9 @@ public class ProxyController implements Controller {
     }
 
     CoordinatesJson coordinates = new CoordinatesJson(listOfCoord);
-    TakeShotsJson takeShotsJson = new TakeShotsJson(coordinates);
-    JsonNode jsonResponse = JsonUtils.serializeRecord(takeShotsJson);
+    JsonNode jsonResponse = JsonUtils.serializeRecord(coordinates);
     MessageJson takeShotResponse = new MessageJson("take-shots", jsonResponse);
-    this.out.println(takeShotResponse);
+    this.out.println(JsonUtils.serializeRecord(takeShotResponse));
   }
 
   private void handleReportDamage(JsonNode arguments) {
@@ -172,10 +166,9 @@ public class ProxyController implements Controller {
     }
 
     coordinatesJson = new CoordinatesJson(coordJsons);
-    ReportDamageJson reportDamageJson = new ReportDamageJson(coordinatesJson);
-    JsonNode jsonResponse = JsonUtils.serializeRecord(reportDamageJson);
+    JsonNode jsonResponse = JsonUtils.serializeRecord(coordinatesJson);
     MessageJson reportDamageResponse = new MessageJson("report-damage", jsonResponse);
-    this.out.println(reportDamageResponse);
+    this.out.println(JsonUtils.serializeRecord(reportDamageResponse));
   }
 
   private void handleSuccessfulHits(JsonNode arguments) {
@@ -191,7 +184,7 @@ public class ProxyController implements Controller {
     player.successfulHits(myShots);
     MessageJson reportDamageResponse = new MessageJson("successful-hits",
         VOID_RESPONSE);
-    this.out.println(reportDamageResponse);
+    this.out.println(JsonUtils.serializeRecord(reportDamageResponse));
   }
 
   private void handleEndGame(JsonNode arguments) {
@@ -202,7 +195,7 @@ public class ProxyController implements Controller {
 
     MessageJson reportDamageResponse = new MessageJson("end-game",
         VOID_RESPONSE);
-    this.out.println(reportDamageResponse);
+    this.out.println(JsonUtils.serializeRecord(reportDamageResponse));
 
     try {
       server.close();
