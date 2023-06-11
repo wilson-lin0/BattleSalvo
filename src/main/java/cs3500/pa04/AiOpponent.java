@@ -76,6 +76,7 @@ public class AiOpponent extends AbstractPlayer {
     }
 
     return shotsToFire;
+
   }
 
   /**
