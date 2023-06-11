@@ -29,7 +29,7 @@ public class AiOpponent extends AbstractPlayer {
 
     List<Coord> shotsToFire = new ArrayList<>();
     for (Coord coordinate : shotsHit) {
-      Boolean full = false;
+      Boolean full;
       Coord down = new Coord(coordinate.returnX(), coordinate.returnY() + 1);
       Coord up = new Coord(coordinate.returnX(), coordinate.returnY() - 1);
       Coord left = new Coord(coordinate.returnX() - 1, coordinate.returnY());
@@ -47,7 +47,6 @@ public class AiOpponent extends AbstractPlayer {
           shotsToFire.add(coordinates);
           this.coveredBoard.updatePosition(coordinates, 'M');
           if (shotsToFire.size() == shotsAvailable) {
-            full = true;
             break;
           }
         }
@@ -55,6 +54,7 @@ public class AiOpponent extends AbstractPlayer {
 
       while (true) {
         shotsToFire.add(getRandomShots(1).get(0));
+        this.coveredBoard.updatePosition(getRandomShots(1).get(0), 'M');
         if (shotsToFire.size() == shotsAvailable) {
           full = true;
           break;
@@ -84,6 +84,7 @@ public class AiOpponent extends AbstractPlayer {
       Coord randomCoord = new Coord(randomCoordX, randomCoordY);
       if (this.coveredBoard.getCoord(randomCoord) == 'O') {
         listOfRandomShots.add(randomCoord);
+        this.coveredBoard.updatePosition(randomCoord, 'M');
         i++;
       }
     }
