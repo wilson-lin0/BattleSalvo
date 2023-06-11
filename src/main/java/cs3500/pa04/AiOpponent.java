@@ -46,7 +46,7 @@ public class AiOpponent extends AbstractPlayer {
         if (this.coveredBoard.getCoord(coordinates) == 'O') {
           shotsToFire.add(coordinates);
           this.coveredBoard.updatePosition(coordinates, 'M');
-          if (shotsToFire.size() == 4) {
+          if (shotsToFire.size() == shotsAvailable) {
             full = true;
             break;
           }
