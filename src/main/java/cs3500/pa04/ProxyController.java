@@ -13,9 +13,9 @@ import cs3500.pa04.json.EndGameJson;
 import cs3500.pa04.json.FleetJson;
 import cs3500.pa04.json.FleetSpec;
 import cs3500.pa04.json.JoinJson;
+import cs3500.pa04.json.JsonUtils;
 import cs3500.pa04.json.MessageJson;
 import cs3500.pa04.json.ServerSetupJson;
-import cs3500.pa04.json.JsonUtils;
 import cs3500.pa04.json.ShipJson;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controls the flow of BattleSalvo
+ */
 public class ProxyController implements Controller {
   private final Socket server;
   private final InputStream in;

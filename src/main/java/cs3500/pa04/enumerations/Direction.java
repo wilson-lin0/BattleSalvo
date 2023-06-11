@@ -1,10 +1,14 @@
 package cs3500.pa04.enumerations;
 
+/**
+ * To represent directions.
+ */
 public enum Direction {
   VERTICAL("VERTICAL"),
   HORIZONTAL("HORIZONTAL");
 
   private final String direction;
+
   Direction(String direction) {
     this.direction = direction;
   }

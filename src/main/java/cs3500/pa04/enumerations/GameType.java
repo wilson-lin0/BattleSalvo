@@ -1,5 +1,8 @@
 package cs3500.pa04.enumerations;
 
+/**
+ * To represent the game types.
+ */
 public enum GameType {
   SINGLE("SINGLE"),
   MULTI("MULTI");
