@@ -57,7 +57,6 @@ public class AiOpponent extends AbstractPlayer {
         break;
       }
     }
-
     return shotsToFire;
   }
 
@@ -106,17 +105,18 @@ public class AiOpponent extends AbstractPlayer {
   private List<Coord> validCoordList(List<Coord> coordinates) {
     List<Coord> returnList = new ArrayList<>();
     for (Coord coordinate : coordinates) {
-      if (validCoordinate(coordinate));
-      returnList.add(coordinate);
+      if (validCoordinate(coordinate)) {
+        returnList.add(coordinate);
+      }
     }
     return returnList;
   }
 
   /**
-   * Returns the shots hit on the board.
+   * Returns the shots that hit a ship.
    *
-   * @param shotsAvailable number of shots available
-   * @return List the list of shots that hit a ship
+   * @param shotsAvailable the number of shots available
+   * @return List the list of shots that hit the ship
    */
   private List<Coord> returnShotsHit(int shotsAvailable) {
     List<Coord> shotsHit = new ArrayList<>();
