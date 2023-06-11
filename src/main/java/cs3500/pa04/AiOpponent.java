@@ -53,6 +53,10 @@ public class AiOpponent extends AbstractPlayer {
         }
       }
 
+      while (shotsToFire.size() != shotsAvailable) {
+        shotsToFire.add(getRandomShots(1).get(0));
+      }
+
       if (full) {
         break;
       }
