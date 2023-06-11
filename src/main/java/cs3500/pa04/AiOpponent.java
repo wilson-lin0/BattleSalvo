@@ -84,7 +84,6 @@ public class AiOpponent extends AbstractPlayer {
       Coord randomCoord = new Coord(randomCoordX, randomCoordY);
       if (this.coveredBoard.getCoord(randomCoord) == 'O') {
         listOfRandomShots.add(randomCoord);
-        this.coveredBoard.updatePosition(randomCoord, 'M');
         i++;
       }
     }
