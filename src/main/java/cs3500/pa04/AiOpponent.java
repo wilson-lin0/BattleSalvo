@@ -8,8 +8,10 @@ import java.util.Random;
  * The opponent.
  */
 public class AiOpponent extends AbstractPlayer {
+  private List<Coord> listPossibleShots;
   AiOpponent(String name) {
     super(name);
+    listPossibleShots = new ArrayList<>();
   }
 
   /**
@@ -76,16 +78,18 @@ public class AiOpponent extends AbstractPlayer {
    */
   private List<Coord> getRandomShots(int limit) {
     List<Coord> listOfRandomShots = new ArrayList<>();
-    Random randomX = new Random();
-    Random randomY = new Random();
-    for (int i = 0; i < limit;) {
-      int randomCoordX = randomX.nextInt(this.coveredBoard.returnWidth());
-      int randomCoordY = randomY.nextInt(this.coveredBoard.returnHeight());
-      Coord randomCoord = new Coord(randomCoordX, randomCoordY);
-      if (this.coveredBoard.getCoord(randomCoord) == 'O') {
-        listOfRandomShots.add(randomCoord);
-        i++;
+    Random random = new Random();
+
+    for (int i = 0; i < this.coveredBoard.returnHeight(); i++) {
+      for (int j = 0; j < this.coveredBoard.returnWidth(); j++) {
+        this.listPossibleShots.add(new Coord(j, i));
       }
+    }
+
+    for (int i = 0; i < limit; i++) {
+      int randomNum = random.nextInt(listPossibleShots.size());
+      listOfRandomShots.add(listPossibleShots.get(randomNum));
+      listPossibleShots.remove(randomNum);
     }
     return listOfRandomShots;
   }
