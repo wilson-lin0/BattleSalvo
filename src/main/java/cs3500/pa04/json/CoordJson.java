@@ -5,12 +5,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Represents a coord Json.
  *
- * @param coordinateX the x coordinate of a Coord
- * @param coordinateY the y coordinate of a Coord
+ * @param xCoordinate the x coordinate of a Coord
+ * @param yCoordinate the y coordinate of a Coord
  */
 public record CoordJson(
-    @JsonProperty("x") int coordinateX,
-    @JsonProperty("y") int coordinateY) {
+    @JsonProperty("x") int xCoordinate,
+    @JsonProperty("y") int yCoordinate) {
 
   /**
    * Returns the x coordinate.
@@ -18,7 +18,7 @@ public record CoordJson(
    * @return int the x coordinate
    */
   public int returnX() {
-    return this.coordinateX;
+    return this.xCoordinate;
   }
 
   /**
@@ -27,6 +27,6 @@ public record CoordJson(
    * @return int the y coordinate
    */
   public int returnY() {
-    return this.coordinateY;
+    return this.yCoordinate;
   }
 }

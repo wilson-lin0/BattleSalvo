@@ -30,6 +30,7 @@ public class AiOpponent extends AbstractPlayer {
     List<Coord> shotsToFire = new ArrayList<>();
     for (Coord coordinate : shotsHit) {
       Boolean full = false;
+      List<Coord> tempShots;
       Coord down = new Coord(coordinate.returnX(), coordinate.returnY() + 1);
       Coord up = new Coord(coordinate.returnX(), coordinate.returnY() - 1);
       Coord left = new Coord(coordinate.returnX() - 1, coordinate.returnY());
@@ -39,7 +40,6 @@ public class AiOpponent extends AbstractPlayer {
       coordList.add(up);
       coordList.add(left);
       coordList.add(right);
-      List<Coord> tempShots;
       tempShots = validCoordList(coordList);
 
       for (Coord coordinates : tempShots) {

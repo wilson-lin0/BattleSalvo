@@ -20,7 +20,7 @@ public class Driver {
       } catch (IOException e) {
         throw new IllegalArgumentException("You provided an invalid host and/or port!");
       }
-    } else if (args.length == 0) {
+    } else if (args.length == 0){
       View view = new View();
       LocalController control = new LocalController(new InputStreamReader(System.in), view);
       control.run();
@@ -28,19 +28,19 @@ public class Driver {
       throw new IllegalArgumentException("You provided an incorrect amount of arguments!");
     }
   }
-
-  /**
-   * This method connects to the server at the given host and port, builds a proxy referee
-   * to handle communication with the server, and sets up a client player.
-   *
-   * @param host the server host
-   * @param port the server port
-   * @throws IOException if there is a communication issue with the server
-   */
-  private static void runClient(String host, int port) throws IOException, IllegalStateException {
-    Socket server = new Socket(host, port);
-    AiOpponent player = new AiOpponent("Emily");
-    ProxyController proxyController = new ProxyController(server, player);
-    proxyController.run();
-  }
+    /**
+     * This method connects to the server at the given host and port, builds a proxy referee
+     * to handle communication with the server, and sets up a client player.
+     *
+     * @param host the server host
+     * @param port the server port
+     * @throws IOException if there is a communication issue with the server
+     */
+    private static void runClient(String host, int port)
+        throws IOException, IllegalStateException {
+      Socket server = new Socket(host, port);
+      AiOpponent player = new AiOpponent("Emily");
+      ProxyController proxyController = new ProxyController(server, player);
+      proxyController.run();
+    }
 }
