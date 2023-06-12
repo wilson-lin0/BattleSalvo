@@ -14,10 +14,10 @@ import java.util.Map;
  * @param submarine how many submarines
  */
 public record FleetSpec(
-    @JsonProperty("carrier") int carrier,
-    @JsonProperty("battleship") int battleship,
-    @JsonProperty("destroyer") int destroyer,
-    @JsonProperty("submarine") int submarine) {
+    @JsonProperty("CARRIER") int carrier,
+    @JsonProperty("BATTLESHIP") int battleship,
+    @JsonProperty("DESTROYER") int destroyer,
+    @JsonProperty("SUBMARINE") int submarine) {
 
   /**
    * Gets the specifications.
