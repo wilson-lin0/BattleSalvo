@@ -67,7 +67,7 @@ public class AiOpponent extends AbstractPlayer {
    * @param coord the provided coord
    * @return List the list of coordinates that are adjacent
    */
-  private List<Coord> upDownLeftRight (Coord coord) {
+  private List<Coord> upDownLeftRight(Coord coord) {
     Coord down = new Coord(coord.returnX(), coord.returnY() + 1);
     Coord up = new Coord(coord.returnX(), coord.returnY() - 1);
     Coord left = new Coord(coord.returnX() - 1, coord.returnY());

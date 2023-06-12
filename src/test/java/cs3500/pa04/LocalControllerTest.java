@@ -42,4 +42,23 @@ class LocalControllerTest {
     LocalController player = new LocalController(mock, view);
     player.run();
   }
+
+  @Test
+  public void testStartGame2() {
+    MockInput mock = new MockInput();
+    mock.expectedNextString("emily");
+    mock.expectedNextString("-1 7");
+    mock.expectedNextString("7 -1");
+    mock.expectedNextString("17 7");
+    mock.expectedNextString("7 17");
+    mock.expectedNextString("6 6");
+    mock.expectedNextString("1 1 1 1");
+    for (int i = 0; i < 6; i++) {
+      for (int j = 0; j < 6; j++) {
+        mock.expectedNextString(i + " " + j);
+      }
+    }
+    LocalController player = new LocalController(mock, view);
+    player.run();
+  }
 }
