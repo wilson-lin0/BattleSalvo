@@ -64,6 +64,11 @@ public class Ship {
     return -1;
   }
 
+  /**
+   * Gets the direction.
+   *
+   * @return the direction
+   */
   public Direction getDirection() {
     if (this.coordinate.get(0).returnX() < this.coordinate.get(1).returnX()) {
       return Direction.HORIZONTAL;

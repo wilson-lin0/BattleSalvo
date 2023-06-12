@@ -81,7 +81,7 @@ public class ProxyControllerTest {
   @Test
   public void testSetup() {
     FleetSpec fleetSpec = new FleetSpec(3, 1, 1, 1);
-    ServerSetupJson serverSetupJson = new ServerSetupJson(6,6, fleetSpec);
+    ServerSetupJson serverSetupJson = new ServerSetupJson(6, 6, fleetSpec);
     JsonNode sampleMessage = JsonUtils.serializeRecord(serverSetupJson);
     MessageJson messageJson = new MessageJson("setup", sampleMessage);
     JsonNode serverMessage = JsonUtils.serializeRecord(messageJson);
@@ -195,6 +195,7 @@ public class ProxyControllerTest {
 
   /**
    * Converts the ByteArrayOutputStream log to a string in UTF_8 format
+   *
    * @return String representing the current log buffer
    */
   private String logToString() {
