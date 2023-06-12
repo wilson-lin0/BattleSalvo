@@ -9,12 +9,10 @@ import java.util.Random;
  */
 public class AiOpponent extends AbstractPlayer {
   private List<Coord> listPossibleShots;
-  private List<Coord> previousShots;
 
   AiOpponent(String name) {
     super(name);
     this.listPossibleShots = new ArrayList<>();
-    this.previousShots = new ArrayList<>();
   }
 
   /**
@@ -28,45 +26,38 @@ public class AiOpponent extends AbstractPlayer {
     int shotsAvailable = this.playerBoard.numOfAliveShips();
 
     List<Coord> shotsHit;
-    shotsHit = returnShotsHit(shotsAvailable);
+    shotsHit = returnShotsHit();
+
+    if (shotsHit.size() == this.coveredBoard.returnHeight() * this.coveredBoard.returnWidth()) {
+      return new ArrayList<>();
+    }
+
     if (shotsHit.isEmpty()) {
       return getRandomShots(shotsAvailable);
     }
 
     List<Coord> shotsToFire = new ArrayList<>();
     for (Coord coordinate : shotsHit) {
-      Boolean full;
       List<Coord> tempShots;
       tempShots = upDownLeftRight(coordinate);
 
       for (Coord coordinates : tempShots) {
         if (this.coveredBoard.getCoord(coordinates) == 'O') {
-          shotsToFire.add(coordinates);
-          this.coveredBoard.updatePosition(coordinates, 'M');
+          if (shotsToFire.size() < shotsAvailable) {
+            shotsToFire.add(coordinates);
+            this.coveredBoard.updatePosition(coordinates, 'M');
+          }
           if (shotsToFire.size() == shotsAvailable) {
-            break;
+            return shotsToFire;
           }
         }
       }
-
-      if (returnBoard().isEmpty()) {
-        List<Coord> empty = new ArrayList<>();
-        return empty;
-      }
-
-      while (true) {
-        shotsToFire.add(getRandomShots(1).get(0));
-        this.coveredBoard.updatePosition(getRandomShots(1).get(0), 'M');
-        if (shotsToFire.size() == shotsAvailable) {
-          full = true;
-          break;
-        }
-      }
-
-      if (full) {
-        break;
-      }
     }
+
+    while (shotsToFire.size() < shotsAvailable) {
+      shotsToFire.addAll(getRandomShots(shotsAvailable - shotsToFire.size()));
+    }
+
     return shotsToFire;
   }
 
@@ -104,6 +95,7 @@ public class AiOpponent extends AbstractPlayer {
     List<Coord> listOfRandomShots = new ArrayList<>();
     Random random = new Random();
 
+    this.listPossibleShots.clear();
     for (int i = 0; i < this.coveredBoard.returnHeight(); i++) {
       for (int j = 0; j < this.coveredBoard.returnWidth(); j++) {
         if (this.coveredBoard.getCoord(new Coord(j, i)) == 'O') {
@@ -112,14 +104,18 @@ public class AiOpponent extends AbstractPlayer {
       }
     }
 
+    List<Coord> alreadyShot = new ArrayList<>();
+
     for (int i = 0; i < limit;) {
       int randomNum = random.nextInt(listPossibleShots.size());
-      if (!previousShots.contains(listPossibleShots.get(randomNum))) {
+      if (!alreadyShot.contains(listPossibleShots.get(randomNum))) {
         listOfRandomShots.add(listPossibleShots.get(randomNum));
-        previousShots.add(listPossibleShots.get(randomNum));
+        alreadyShot.add(listPossibleShots.get(randomNum));
+        this.coveredBoard.updatePosition(listPossibleShots.get(randomNum), 'M');
         i++;
       }
     }
+
     return listOfRandomShots;
   }
 
@@ -156,31 +152,13 @@ public class AiOpponent extends AbstractPlayer {
   /**
    * Returns the shots that hit a ship.
    *
-   * @param shotsAvailable the number of shots available
    * @return List the list of shots that hit the ship
    */
-  private List<Coord> returnShotsHit(int shotsAvailable) {
-    List<Coord> shotsHit = new ArrayList<>();
-    for (int i = 0; i < this.coveredBoard.returnHeight() && shotsAvailable > 0; i++) {
-      for (int j = 0; j < this.coveredBoard.returnWidth() && shotsAvailable > 0; j++) {
-        if (this.coveredBoard.getCoord(new Coord(j, i)) == 'H') {
-          shotsHit.add(new Coord(j, i));
-        }
-      }
-    }
-    return shotsHit;
-  }
-
-  /**
-   * Returns the coordinates of the board.
-   *
-   * @return List the list of coordinates
-   */
-  private List<Coord> returnBoard() {
+  private List<Coord> returnShotsHit() {
     List<Coord> shotsHit = new ArrayList<>();
     for (int i = 0; i < this.coveredBoard.returnHeight(); i++) {
       for (int j = 0; j < this.coveredBoard.returnWidth(); j++) {
-        if (this.coveredBoard.getCoord(new Coord(j, i)) == 'O') {
+        if (this.coveredBoard.getCoord(new Coord(j, i)) == 'H') {
           shotsHit.add(new Coord(j, i));
         }
       }

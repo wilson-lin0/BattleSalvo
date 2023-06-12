@@ -88,7 +88,7 @@ public class ProxyController implements Controller {
   }
 
   private void handleJoin() {
-    String name = "jae-e";
+    String name = "jea-e";
     GameType gameType = GameType.SINGLE;
 
     JoinJson joinJson = new JoinJson(name, gameType.getGameType());

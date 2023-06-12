@@ -1,4 +1,4 @@
-package cs3500.pa04;
+package cs3500.pa04.enumerations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
