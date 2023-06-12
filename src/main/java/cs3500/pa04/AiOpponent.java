@@ -9,9 +9,12 @@ import java.util.Random;
  */
 public class AiOpponent extends AbstractPlayer {
   private List<Coord> listPossibleShots;
+  private List<Coord> previousShots;
+
   AiOpponent(String name) {
     super(name);
-    listPossibleShots = new ArrayList<>();
+    this.listPossibleShots = new ArrayList<>();
+    this.previousShots = new ArrayList<>();
   }
 
   /**
@@ -103,14 +106,19 @@ public class AiOpponent extends AbstractPlayer {
 
     for (int i = 0; i < this.coveredBoard.returnHeight(); i++) {
       for (int j = 0; j < this.coveredBoard.returnWidth(); j++) {
-        this.listPossibleShots.add(new Coord(j, i));
+        if (this.coveredBoard.getCoord(new Coord(j, i)) == 'O') {
+          this.listPossibleShots.add(new Coord(j, i));
+        }
       }
     }
 
-    for (int i = 0; i < limit; i++) {
+    for (int i = 0; i < limit;) {
       int randomNum = random.nextInt(listPossibleShots.size());
-      listOfRandomShots.add(listPossibleShots.get(randomNum));
-      listPossibleShots.remove(randomNum);
+      if (!previousShots.contains(listPossibleShots.get(randomNum))) {
+        listOfRandomShots.add(listPossibleShots.get(randomNum));
+        previousShots.add(listPossibleShots.get(randomNum));
+        i++;
+      }
     }
     return listOfRandomShots;
   }
