@@ -41,7 +41,7 @@ public class LocalController implements Controller {
   /**
    * Asks for the width and height of the board as a Coord. Has to be between [6, 15].
    *
-   * @return Coord the width as coordinateX and height as coordinateY
+   * @return Coord the width as x and height as y
    */
   private Coord enterWidthHeight() {
     Scanner scanner = new Scanner(input);
