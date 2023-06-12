@@ -144,7 +144,6 @@ public class ProxyController implements Controller {
     CoordinatesJson coordinates = new CoordinatesJson(listOfCoord);
     JsonNode jsonResponse = JsonUtils.serializeRecord(coordinates);
     MessageJson takeShotResponse = new MessageJson("take-shots", jsonResponse);
-    System.out.println(takeShotResponse);
     this.out.println(JsonUtils.serializeRecord(takeShotResponse));
   }
 
