@@ -61,7 +61,8 @@ public class ProxyController implements Controller {
         delegateMessage(message);
       }
     } catch (IOException e) {
-      e.printStackTrace();
+      // Does not throw an error because server is always right and so we can run the tests without
+      // having to close the server when calling controller.run()
     }
   }
 

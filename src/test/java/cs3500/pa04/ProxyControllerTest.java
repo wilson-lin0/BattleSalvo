@@ -6,14 +6,21 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cs3500.pa04.json.JoinJson;
+import cs3500.pa04.enumerations.GameResult;
+import cs3500.pa04.enumerations.ShipType;
+import cs3500.pa04.json.CoordJson;
+import cs3500.pa04.json.CoordinatesJson;
+import cs3500.pa04.json.EndGameJson;
+import cs3500.pa04.json.FleetSpec;
 import cs3500.pa04.json.JsonUtils;
 import cs3500.pa04.json.MessageJson;
-import cs3500.pa04.json.Mocket;
+import cs3500.pa04.json.ServerSetupJson;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -24,8 +31,8 @@ public class ProxyControllerTest {
 
   private ByteArrayOutputStream testLog;
   private ProxyController controller;
-
   ObjectMapper objectMapper;
+  AiOpponent player;
 
 
   /**
@@ -37,6 +44,15 @@ public class ProxyControllerTest {
     assertEquals("", logToString());
 
     objectMapper = new ObjectMapper();
+
+
+    player = new AiOpponent("Emily");
+    Map<ShipType, Integer> specifications = new HashMap<>();
+    specifications.put(ShipType.C, 1);
+    specifications.put(ShipType.B, 1);
+    specifications.put(ShipType.D, 1);
+    specifications.put(ShipType.S, 1);
+    player.setup(6, 6, specifications);
   }
 
   /**
@@ -44,11 +60,11 @@ public class ProxyControllerTest {
    */
   @Test
   public void testJoin() {
-    JsonNode sampleMessage = createSampleMessage("join", objectMapper.createObjectNode());
-
+    MessageJson messageJson = new MessageJson("join", objectMapper.createObjectNode());
+    JsonNode joinMessage = JsonUtils.serializeRecord(messageJson);
 
     // Create the client with all necessary messages
-    Mocket socket = new Mocket(this.testLog, List.of(sampleMessage.toString()));
+    Mocket socket = new Mocket(this.testLog, List.of(joinMessage.toString()));
 
     // Create a Dealer
     try {
@@ -59,13 +75,123 @@ public class ProxyControllerTest {
 
     // run the dealer and verify the response
     this.controller.run();
-
-    String expected =
-        "{\"method-name\":\"join\",\"arguments\":{\"name\":\"jae-e\",\"game-type\":\"SINGLE\"}}";
-    assertEquals(expected, logToString());
+    responseToClass(MessageJson.class);
   }
 
+  @Test
+  public void testSetup() {
+    FleetSpec fleetSpec = new FleetSpec(3, 1, 1, 1);
+    ServerSetupJson serverSetupJson = new ServerSetupJson(6,6, fleetSpec);
+    JsonNode sampleMessage = JsonUtils.serializeRecord(serverSetupJson);
+    MessageJson messageJson = new MessageJson("setup", sampleMessage);
+    JsonNode serverMessage = JsonUtils.serializeRecord(messageJson);
 
+    // Create the client with all necessary messages
+    Mocket socket = new Mocket(this.testLog, List.of(serverMessage.toString()));
+
+    // Create a Dealer
+    try {
+      this.controller = new ProxyController(socket, new AiOpponent("Emily"));
+    } catch (IOException e) {
+      fail();
+    }
+
+    // run the dealer and verify the response
+    this.controller.run();
+    responseToClass(MessageJson.class);
+  }
+
+  @Test
+  public void testTakeShots() {
+
+    MessageJson messageJson = new MessageJson("take-shots",
+        objectMapper.createObjectNode());
+    JsonNode takeShotMessage = JsonUtils.serializeRecord(messageJson);
+
+    // Create the client with all necessary messages
+    Mocket socket = new Mocket(this.testLog, List.of(takeShotMessage.toString()));
+
+    // Create a Dealer
+    try {
+      this.controller = new ProxyController(socket, player);
+    } catch (IOException e) {
+      fail();
+    }
+
+    // run the dealer and verify the response
+    this.controller.run();
+    responseToClass(MessageJson.class);
+  }
+
+  @Test
+  public void testReportDamage() {
+    CoordJson[] coordJsons = new CoordJson[0];
+    CoordinatesJson coordinatesJson = new CoordinatesJson(coordJsons);
+    JsonNode sampleMessage = JsonUtils.serializeRecord(coordinatesJson);
+    MessageJson messageJson = new MessageJson("report-damage", sampleMessage);
+    JsonNode serverMessage = JsonUtils.serializeRecord(messageJson);
+
+    // Create the client with all necessary messages
+    Mocket socket = new Mocket(this.testLog, List.of(serverMessage.toString()));
+
+    // Create a Dealer
+    try {
+      this.controller = new ProxyController(socket, player);
+    } catch (IOException e) {
+      fail();
+    }
+
+    // run the dealer and verify the response
+    this.controller.run();
+    responseToClass(MessageJson.class);
+  }
+
+  @Test
+  public void testSuccessfulHits() {
+    CoordJson[] coordJsons = new CoordJson[0];
+    CoordinatesJson coordinatesJson = new CoordinatesJson(coordJsons);
+    JsonNode sampleMessage = JsonUtils.serializeRecord(coordinatesJson);
+    MessageJson messageJson = new MessageJson("successful-hits", sampleMessage);
+    JsonNode serverMessage = JsonUtils.serializeRecord(messageJson);
+
+    // Create the client with all necessary messages
+    Mocket socket = new Mocket(this.testLog, List.of(serverMessage.toString()));
+
+    // Create a Dealer
+    try {
+      this.controller = new ProxyController(socket, player);
+    } catch (IOException e) {
+      fail();
+    }
+
+    // run the dealer and verify the response
+    this.controller.run();
+    responseToClass(MessageJson.class);
+  }
+
+  @Test
+  public void testEndGame() {
+    EndGameJson endGameJson = new EndGameJson(GameResult.WIN,
+        "Player 1 sank all of Player 2's ships");
+    JsonNode sampleMessage = JsonUtils.serializeRecord(endGameJson);
+    MessageJson messageJson = new MessageJson("end-game", sampleMessage);
+    JsonNode serverMessage = JsonUtils.serializeRecord(messageJson);
+
+    // Create the client with all necessary messages
+    Mocket socket = new Mocket(this.testLog, List.of(serverMessage.toString()));
+
+    // Create a Dealer
+    try {
+      this.controller = new ProxyController(socket, new AiOpponent("Emily"));
+    } catch (IOException e) {
+      fail();
+    }
+
+    // run the dealer and verify the response
+    this.controller.run();
+    String expected = "{\"method-name\":\"end-game\",\"arguments\":\"void\"}";
+    assertEquals(expected, logToString());
+  }
 
   /**
    * Converts the ByteArrayOutputStream log to a string in UTF_8 format
@@ -92,17 +218,5 @@ public class ProxyControllerTest {
       // -> test fails since it must have been the wrong type of response.
       fail();
     }
-  }
-  /*
-
-  /**
-   * Create a MessageJson for some name and arguments.
-   * @param messageName name of the type of message;
-   * @param messageObject object to embed in a message json
-   * @return a MessageJson for the object
-   */
-  private JsonNode createSampleMessage(String messageName, Record messageObject) {
-    MessageJson messageJson = new MessageJson(messageName, JsonUtils.serializeRecord(messageObject));
-    return JsonUtils.serializeRecord(messageJson);
   }
 }
