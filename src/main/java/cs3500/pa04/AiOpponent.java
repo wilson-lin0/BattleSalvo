@@ -23,26 +23,18 @@ public class AiOpponent extends AbstractPlayer {
   @Override
   public List<Coord> takeShots() {
     int shotsAvailable = this.playerBoard.numOfAliveShips();
+
     List<Coord> shotsHit;
     shotsHit = returnShotsHit(shotsAvailable);
     if (shotsHit.isEmpty()) {
-      return getRandomShots(this.playerBoard.numOfAliveShips());
+      return getRandomShots(shotsAvailable);
     }
 
     List<Coord> shotsToFire = new ArrayList<>();
     for (Coord coordinate : shotsHit) {
       Boolean full;
-      Coord down = new Coord(coordinate.returnX(), coordinate.returnY() + 1);
-      Coord up = new Coord(coordinate.returnX(), coordinate.returnY() - 1);
-      Coord left = new Coord(coordinate.returnX() - 1, coordinate.returnY());
-      Coord right = new Coord(coordinate.returnX() + 1, coordinate.returnY());
-      List<Coord> coordList = new ArrayList<>();
-      coordList.add(down);
-      coordList.add(up);
-      coordList.add(left);
-      coordList.add(right);
       List<Coord> tempShots;
-      tempShots = validCoordList(coordList);
+      tempShots = upDownLeftRight(coordinate);
 
       for (Coord coordinates : tempShots) {
         if (this.coveredBoard.getCoord(coordinates) == 'O') {
@@ -52,6 +44,11 @@ public class AiOpponent extends AbstractPlayer {
             break;
           }
         }
+      }
+
+      if (returnBoard().isEmpty()) {
+        List<Coord> empty = new ArrayList<>();
+        return empty;
       }
 
       while (true) {
@@ -68,6 +65,30 @@ public class AiOpponent extends AbstractPlayer {
       }
     }
     return shotsToFire;
+  }
+
+  /**
+   * Returns the valid coordinates adjacent to the provided Coord.
+   *
+   * @param coord the provided coord
+   * @return List the list of coordinates that are adjacent
+   */
+  private List<Coord> upDownLeftRight(Coord coord) {
+    Coord down = new Coord(coord.returnX(), coord.returnY() + 1);
+    Coord up = new Coord(coord.returnX(), coord.returnY() - 1);
+    Coord left = new Coord(coord.returnX() - 1, coord.returnY());
+    Coord right = new Coord(coord.returnX() + 1, coord.returnY());
+
+    List<Coord> coordList = new ArrayList<>();
+    coordList.add(down);
+    coordList.add(up);
+    coordList.add(left);
+    coordList.add(right);
+
+    List<Coord> validShots;
+    validShots = validCoordList(coordList);
+
+    return validShots;
   }
 
   /**
@@ -135,6 +156,23 @@ public class AiOpponent extends AbstractPlayer {
     for (int i = 0; i < this.coveredBoard.returnHeight() && shotsAvailable > 0; i++) {
       for (int j = 0; j < this.coveredBoard.returnWidth() && shotsAvailable > 0; j++) {
         if (this.coveredBoard.getCoord(new Coord(j, i)) == 'H') {
+          shotsHit.add(new Coord(j, i));
+        }
+      }
+    }
+    return shotsHit;
+  }
+
+  /**
+   * Returns the coordinates of the board.
+   *
+   * @return List the list of coordinates
+   */
+  private List<Coord> returnBoard() {
+    List<Coord> shotsHit = new ArrayList<>();
+    for (int i = 0; i < this.coveredBoard.returnHeight(); i++) {
+      for (int j = 0; j < this.coveredBoard.returnWidth(); j++) {
+        if (this.coveredBoard.getCoord(new Coord(j, i)) == 'O') {
           shotsHit.add(new Coord(j, i));
         }
       }
