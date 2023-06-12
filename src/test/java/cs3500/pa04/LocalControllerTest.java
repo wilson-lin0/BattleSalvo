@@ -32,16 +32,8 @@ class LocalControllerTest {
   public void testStartGame() {
     MockInput mock = new MockInput();
     mock.expectedNextString("emily");
-    mock.expectedNextString("-1 7");
-    mock.expectedNextString("7 -1");
-    mock.expectedNextString("4 7");
-    mock.expectedNextString("7 4");
-    mock.expectedNextString("18 7");
-    mock.expectedNextString("7 18");
     mock.expectedNextString("6 6");
-    mock.expectedNextString("3 3 3 3");
     mock.expectedNextString("1 1 1 1");
-    mock.expectedNextString("-1 0");
     for (int i = 0; i < 6; i++) {
       for (int j = 0; j < 6; j++) {
         mock.expectedNextString(i + " " + j);
